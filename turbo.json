@@ -1,6 +1,7 @@
 {
   "$schema": "https://turborepo.dev/schema.json",
   "ui": "tui",
+  "globalEnv": ["VTEX_BASE_URL", "VTEX_APP_KEY", "VTEX_APP_TOKEN"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
