@@ -1,30 +1,31 @@
 import { NextResponse } from "next/server";
-import { VtexClient } from "@repo/sdk";
+import { createClient } from "@repo/sdk";
 
 export async function GET() {
   try {
-    const client = new VtexClient({
+    const client = createClient({
       baseUrl: process.env.VTEX_BASE_URL!,
       appKey: process.env.VTEX_APP_KEY!,
       appToken: process.env.VTEX_APP_TOKEN!,
     });
 
-    await client.createSession();
+    await client.session.createSession();
 
-    const orderForm = await client.createOrderForm();
+    const orderForm = await client.checkout.createOrderForm();
 
-    await client.addItems(orderForm.orderFormId, [
+    await client.checkout.addItem(orderForm.orderFormId, [
       {
-        id: "123", // real SKU required
+        id: 123, // real SKU required
         quantity: 1,
         seller: "1",
       },
     ]);
 
     return NextResponse.json(orderForm);
-  } catch (e: any) {
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : "Unknown error";
     return NextResponse.json(
-      { error: e.message },
+      { error: message },
       { status: 500 }
     );
   }

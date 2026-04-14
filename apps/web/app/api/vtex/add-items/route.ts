@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { VtexClient } from "@repo/sdk";
+import { createClient } from "@repo/sdk";
 
 export async function POST(request: Request) {
   try {
@@ -12,14 +12,14 @@ export async function POST(request: Request) {
       );
     }
 
-    const client = new VtexClient({
+    const client = createClient({
       baseUrl: process.env.VTEX_BASE_URL!,
       appKey: process.env.VTEX_APP_KEY!,
       appToken: process.env.VTEX_APP_TOKEN!,
     });
 
-    await client.createSession();
-    const result = await client.addItems(orderFormId, items);
+    await client.session.createSession();
+    const result = await client.checkout.addItem(orderFormId, items);
 
     return NextResponse.json({ success: true, data: result });
   } catch (e: unknown) {

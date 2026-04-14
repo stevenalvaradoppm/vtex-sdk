@@ -1,15 +1,15 @@
 import { NextResponse } from "next/server";
-import { VtexClient } from "@repo/sdk";
+import { createClient } from "@repo/sdk";
 
 export async function POST() {
   try {
-    const client = new VtexClient({
+    const client = createClient({
       baseUrl: process.env.VTEX_BASE_URL!,
       appKey: process.env.VTEX_APP_KEY!,
       appToken: process.env.VTEX_APP_TOKEN!,
     });
 
-    await client.createSession();
+    await client.session.createSession();
 
     return NextResponse.json({ success: true, message: "Session created" });
   } catch (e: unknown) {
