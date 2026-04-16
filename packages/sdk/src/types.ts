@@ -1,44 +1,23 @@
-export type SessionData = {
-  segmentToken: string;
-  sessionToken: string;
-};
+import type { IHttpClient } from "./ports/http-client";
+import type { ILogger } from "./ports/logger";
 
-export type OrderForm = {
-  orderFormId: string;
-};
+export interface VtexConfig {
+  baseUrl: string;
+  appKey: string;
+  appToken: string;
+}
 
-export type OrderItem = {
-  id: string;
-  quantity: number;
-  seller: string;
-};
+export interface VtexContext {
+  config: VtexConfig;
+  httpClient: IHttpClient;
+  logger: ILogger;
+}
 
-export type ShippingData = {
-  clearAddressIfPostalCodeNotFound: boolean;
-  logisticsInfo: {
-    itemIndex: number;
-    selectedDeliveryChannel: string;
-    selectedSla: string;
-  };
-  selectedAddresses: [
-    {
-      addressName: string;
-      addressType: string;
-      city: string;
-      complement: string;
-      country: string;
-      geoCoordinates: [number, number];
-      number: string;
-      receiverName: string;
-      street: string;
-    },
-  ];
-};
-export type ClientProfileData = {
-  document: string;
-  documentType: string;
-  email: string;
-  firstName: string;
-  homePhone: string;
-  lastName: string;
-};
+export type Result<T> =
+  | { ok: true; data: T }
+  | { ok: false; error: import("./errors").SdkError };
+
+export interface ClientOptions {
+  httpClient?: IHttpClient;
+  logger?: ILogger;
+}
