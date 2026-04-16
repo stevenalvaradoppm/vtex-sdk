@@ -39,12 +39,15 @@ export class FetchClient implements IHttpClient {
       ...options?.headers,
     });
 
-    headers.set("Content-Type", "application/json");
+    const hasBody = options?.body != null;
+    if (hasBody) {
+      headers.set("Content-Type", "application/json");
+    }
 
     const res = await fetch(url, {
       method,
       headers,
-      body: options?.body ? JSON.stringify(options.body) : null,
+      body: hasBody ? JSON.stringify(options.body) : null,
     });
 
     this.updateCookies(res);

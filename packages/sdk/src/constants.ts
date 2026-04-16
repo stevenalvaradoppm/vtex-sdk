@@ -8,4 +8,5 @@ export const VTEX_HEADERS = {
 export const API_PATHS = {
   SESSIONS: "/api/sessions",
   ORDER_FORM: "/api/checkout/pub/orderForm",
+  PRODUCT_SEARCH: "/api/io/_v/api/intelligent-search/product_search",
 } as const;

@@ -1,4 +1,5 @@
 import { createClient } from "../src";
+import type { ShippingDataInput, ClientProfileDataInput } from "../src";
 
 const client = createClient({
   baseUrl: "https://mystore.vtexcommercestable.com.br",
@@ -7,61 +8,66 @@ const client = createClient({
 });
 
 async function main() {
-  await client.session.createSession();
-  console.log("Session created");
+  // 1. Create session (optional email for authenticated checkout)
+  await client.session.createSession("customer@example.com");
+  console.log("1. Session created");
 
+  // 2. Create cart
   const orderForm = await client.checkout.createOrderForm();
-  console.log("Order form created:", orderForm.orderFormId);
+  console.log("2. Cart created:", orderForm.orderFormId);
 
-  const updated = await client.checkout.addItem(orderForm.orderFormId, [
-    { id: 1234, quantity: 2, seller: "1" },
+  // 3. Get products
+  const products = await client.checkout.getProducts();
+  console.log("3. Products fetched:", products);
+
+  // 4. Add item by SKU ID
+  const withItem = await client.checkout.addItem(orderForm.orderFormId, [
+    { id: "880011", quantity: 1, seller: "1" },
   ]);
-  console.log("Item added. Items in cart:", updated.items.length);
+  console.log("4. Item added. Items in cart:", withItem.items.length);
 
-  const withCoupon = await client.checkout.addCoupon(
-    orderForm.orderFormId,
-    "DISCOUNT10"
-  );
-  console.log("Coupon applied. Total:", withCoupon.value);
-
-  const withShipping = await client.checkout.setShipping(orderForm.orderFormId, {
-    address: {
-      addressType: "residential",
-      receiverName: "Test User",
-      addressId: "home",
-      postalCode: "01310-100",
-      city: "São Paulo",
-      state: "SP",
-      country: "BRA",
-      street: "Av. Paulista",
-      number: "1000",
-      neighborhood: "Bela Vista",
-      complement: "",
-      reference: "",
+  // 5. Attach shipping data
+  const shippingData: ShippingDataInput = {
+    clearAddressIfPostalCodeNotFound: false,
+    logisticsInfo: {
+      itemIndex: 0,
+      selectedDeliveryChannel: "delivery",
+      selectedSla: "normal",
     },
-  });
-  console.log("Shipping set:", withShipping.shippingData?.address?.city);
+    selectedAddresses: [
+      {
+        addressName: "home",
+        addressType: "residential",
+        city: "Quito",
+        country: "ECU",
+        geoCoordinates: [-78.4678, -0.1807],
+        number: "123",
+        receiverName: "Test User",
+        street: "Av. Example",
+        complement: "",
+      },
+    ],
+  };
+  const withShipping = await client.checkout.setShipping(
+    orderForm.orderFormId,
+    shippingData
+  );
+  console.log("5. Shipping attached. Status:", withShipping.status);
 
+  // 6. Attach client profile
+  const profileData: ClientProfileDataInput = {
+    document: "0000000000",
+    documentType: "cedula",
+    email: "customer@example.com",
+    firstName: "Test",
+    lastName: "User",
+    homePhone: "+5930000000000",
+  };
   const withProfile = await client.checkout.setClientProfile(
     orderForm.orderFormId,
-    {
-      email: "customer@example.com",
-      firstName: "Test",
-      lastName: "Customer",
-      document: "12345678901",
-      documentType: "cpf",
-      phone: "+5511999999999",
-      isCorporate: false,
-      corporateName: null,
-      tradeName: null,
-      corporateDocument: null,
-      stateInscription: null,
-    }
+    profileData
   );
-  console.log("Profile set:", withProfile.clientProfileData?.email);
-
-  const order = await client.checkout.placeOrder(orderForm.orderFormId);
-  console.log("Order placed:", order);
+  console.log("6. Profile attached. Status:", withProfile.status);
 }
 
 main().catch(console.error);

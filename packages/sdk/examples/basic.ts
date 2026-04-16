@@ -7,11 +7,17 @@ const client = createClient({
 });
 
 async function main() {
+  // 1. Create session
   await client.session.createSession();
   console.log("Session created");
 
-  const session = await client.session.getSession();
-  console.log("Session id:", session.id);
+  // 2. Create cart
+  const orderForm = await client.checkout.createOrderForm();
+  console.log("Cart created:", orderForm.orderFormId);
+
+  // 3. Get products
+  const products = await client.checkout.getProducts();
+  console.log("Products fetched:", products);
 }
 
 main().catch(console.error);

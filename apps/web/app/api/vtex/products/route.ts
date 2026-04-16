@@ -9,23 +9,13 @@ export async function GET() {
       appToken: process.env.VTEX_APP_TOKEN!,
     });
 
-    await client.session.createSession();
+    const products = await client.checkout.getProducts();
 
-    const orderForm = await client.checkout.createOrderForm();
-
-    await client.checkout.addItem(orderForm.orderFormId, [
-      {
-        id: "123", // real SKU required
-        quantity: 1,
-        seller: "1",
-      },
-    ]);
-
-    return NextResponse.json(orderForm);
+    return NextResponse.json({ success: true, data: products });
   } catch (e: unknown) {
     const message = e instanceof Error ? e.message : "Unknown error";
     return NextResponse.json(
-      { error: message },
+      { success: false, error: message },
       { status: 500 }
     );
   }

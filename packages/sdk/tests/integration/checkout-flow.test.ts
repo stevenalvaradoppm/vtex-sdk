@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from "vitest";
 import { createClient } from "../../src/client";
 import { MockHttpClient } from "../mocks/http-client.mock";
 import { ConsoleLogger } from "../../src/adapters/console-logger";
-import { mockSession, mockOrderForm, mockOrderFormWithItem } from "../mocks/vtex-responses.mock";
+import { mockOrderForm, mockOrderFormWithItem } from "../mocks/vtex-responses.mock";
 import { API_PATHS } from "../../src/constants";
 
 const config = {
@@ -27,7 +27,6 @@ describe("checkout flow (integration)", () => {
 
   it("should complete a full session → cart → item flow", async () => {
     httpClient.mockResponse(`${API_PATHS.SESSIONS}?forceNew=true`, undefined);
-    httpClient.mockResponse(API_PATHS.SESSIONS, mockSession);
     httpClient.mockResponse(API_PATHS.ORDER_FORM, mockOrderForm);
     httpClient.mockResponse(
       `${API_PATHS.ORDER_FORM}/${ORDER_FORM_ID}/items`,
@@ -35,14 +34,12 @@ describe("checkout flow (integration)", () => {
     );
 
     await client.session.createSession();
-    const session = await client.session.getSession();
-    expect(session.id).toBe("mock-session-id");
 
     const orderForm = await client.checkout.createOrderForm();
     expect(orderForm.orderFormId).toBe(ORDER_FORM_ID);
 
     const updatedOrderForm = await client.checkout.addItem(ORDER_FORM_ID, [
-      { id: 123, quantity: 1, seller: "1" },
+      { id: "123", quantity: 1, seller: "1" },
     ]);
     expect(updatedOrderForm.items).toHaveLength(1);
     expect(updatedOrderForm.items[0].quantity).toBe(1);

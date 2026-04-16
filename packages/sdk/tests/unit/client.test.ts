@@ -18,25 +18,16 @@ describe("createClient", () => {
 
   it("should expose session methods", () => {
     const client = createClient(config);
-    expect(typeof client.session.getSession).toBe("function");
     expect(typeof client.session.createSession).toBe("function");
-    expect(typeof client.session.updateSession).toBe("function");
   });
 
   it("should expose checkout methods", () => {
     const client = createClient(config);
-    expect(typeof client.checkout.getOrderForm).toBe("function");
     expect(typeof client.checkout.createOrderForm).toBe("function");
+    expect(typeof client.checkout.getProducts).toBe("function");
     expect(typeof client.checkout.addItem).toBe("function");
-    expect(typeof client.checkout.removeItem).toBe("function");
-    expect(typeof client.checkout.updateItems).toBe("function");
     expect(typeof client.checkout.setShipping).toBe("function");
-    expect(typeof client.checkout.setPayment).toBe("function");
     expect(typeof client.checkout.setClientProfile).toBe("function");
-    expect(typeof client.checkout.placeOrder).toBe("function");
-    expect(typeof client.checkout.getInstallments).toBe("function");
-    expect(typeof client.checkout.addCoupon).toBe("function");
-    expect(typeof client.checkout.removeCoupon).toBe("function");
   });
 
   it("should accept custom adapters via options", () => {
