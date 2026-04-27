@@ -1,8 +1,7 @@
 import { createClient } from "@repo/sdk";
 
-// Hardcoded temporally for development purposes
 export const vtexClient = createClient({
-  baseUrl: "https://sorvoecqa.myvtex.com",
-  appKey: "vtexappkey-sorvoecqa-VRVULT",
-  appToken: "CUKNMRKFEFGEYQCUCXCUUZAEMBWPSEVDZPUQCHVEEDNMPYYWQYUBALMHAMYCLECUGJDMVYSRBVKTETURURSMNZKKUSOAVSNASMFIDXKGXNNPTFFFXJGATLQFEVNUWRYM",
+  baseUrl: process.env.EXPO_PUBLIC_VTEX_BASE_URL ?? "",
+  appKey: process.env.EXPO_PUBLIC_VTEX_APP_KEY ?? "",
+  appToken: process.env.EXPO_PUBLIC_VTEX_APP_TOKEN ?? "",
 });

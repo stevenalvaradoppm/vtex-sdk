@@ -150,7 +150,7 @@ export default function ProfileScreen() {
             onPress={handleFinish}
             activeOpacity={0.8}
           >
-            <Text style={{ color: '#fff', fontWeight: '800', fontSize: 16 }}>🎉 Flujo completado — Reiniciar</Text>
+            <Text style={{ color: '#fff', fontWeight: '800', fontSize: 16 }}> Resumen de Compra</Text>
           </TouchableOpacity>
         )}
       </ScrollView>

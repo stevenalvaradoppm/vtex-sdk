@@ -54,10 +54,10 @@ export default function WelcomeScreen() {
               style={{ width: 120, height: 120, marginBottom: 24 }} 
             />
             <Text style={{ color: '#fff', fontSize: 28, fontWeight: '800', letterSpacing: -0.5 }}>
-              VTEX SDK
+              VTEX Markteplace
             </Text>
             <Text style={{ color: '#71717a', fontSize: 15, marginTop: 6, textAlign: 'center', lineHeight: 22 }}>
-              Plataforma de pruebas para el SDK{'\n'}de comercio electrónico de VTEX
+              Plataforma de pruebas {'\n'}de comercio electrónico de VTEX
             </Text>
           </View>
 

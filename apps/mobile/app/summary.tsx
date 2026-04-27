@@ -36,7 +36,7 @@ export default function SummaryScreen() {
             Flujo completado
           </Text>
           <Text style={{ color: '#71717a', fontSize: 14, textAlign: 'center', marginTop: 6, lineHeight: 20 }}>
-            Todos los pasos del SDK VTEX se ejecutaron exitosamente
+            Te contactaremos pronto para continuar con el proceso de compra
           </Text>
         </View>
 

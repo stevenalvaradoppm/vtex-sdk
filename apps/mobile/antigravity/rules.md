@@ -2,7 +2,7 @@
 trigger: always_on
 ---
 
-# Reglas del Proyecto — App Club Promerica
+# Reglas del Proyecto 
 
 Este documento define la arquitectura, convenciones, patrones y estilos del proyecto. Cualquier AI o desarrollador que trabaje aquí debe seguir estas reglas para mantener consistencia.
 
